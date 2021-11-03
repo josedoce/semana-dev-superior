@@ -12,13 +12,18 @@ export function DataTable() {
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>22/04/2021</td>
-                    <td>Barry Allen</td>
-                    <td>34</td>
-                    <td>25</td>
-                    <td>15017.00</td>
-                </tr>
+                {
+                    [1,2,3,4,5,6,7,8,9,10].map((e)=>(
+                        <tr key={e}>
+                            <td>22/04/2021</td>
+                            <td>Barry Allen</td>
+                            <td>34</td>
+                            <td>25</td>
+                            <td>15017.00</td>
+                        </tr>
+                    ))
+                }
+                
             </tbody>
         </table>
     </div>
