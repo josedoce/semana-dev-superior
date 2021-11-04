@@ -23,9 +23,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	protected void configure(HttpSecurity http) throws Exception {
 		if(Arrays.asList(env.getActiveProfiles()).contains("test")) {
+			//obs: Essa configuração é valida em ambiente de desenvolvimento!
 			http.headers().frameOptions().disable();
+			//essa configuração garante o funcionamento do h2 com o spring security.
 		}
-		
 		http.cors().and().csrf().disable();
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http.authorizeRequests().anyRequest().permitAll();
