@@ -13,9 +13,9 @@ export function DonutChart(){
   //forma certa, com hooks
   const [chartData, setChartData] = useState<ChartData>({labels: [], series: []});
   useEffect(()=>{
-    axios.get<SaleSum[]>(`${BASE_URL}/sales/amount-by-seller`)
+    axios.get(`${BASE_URL}/sales/amount-by-seller`)
     .then(response =>{
-      const data = response.data;
+      const data = response.data as SaleSum[];
       const chartData = {
         labels: data.map(e=>e.sellerName),
         series: data.map(e=>e.sum)

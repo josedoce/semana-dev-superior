@@ -33,9 +33,9 @@ export function BarChart(){
   };
   
   useEffect(()=>{
-    axios.get<SaleSuccess[]>(`${BASE_URL}/sales/success-by-seller`)
+    axios.get(`${BASE_URL}/sales/success-by-seller`)
     .then(response=>{
-      const data = response.data;
+      const data = response.data as SaleSuccess[];
       const chartData: ChartData = {
         labels: {
           categories: data.map(e=>e.sellerName)
