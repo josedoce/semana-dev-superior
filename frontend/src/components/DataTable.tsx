@@ -1,4 +1,24 @@
+import axios from "axios";
+import { useEffect, useState } from "react"
+import { SalePage } from "types/sale"
+import { formatLocalDate } from "utils/format";
+import { BASE_URL } from "utils/requests";
+
 export function DataTable() {
+  const[page, setPage] = useState<SalePage>({
+    first: true,
+    last: true,
+    number: 0,
+    totalElements: 0,
+    totalPages: 0,
+  });
+
+  useEffect(()=>{
+    axios.get<SalePage>(`${BASE_URL}/sales?page=0&size=20&sort=date,desc`)
+    .then(response=>{
+      setPage(response.data);
+    });
+  },[]);
   return(
       <div className="table-responsive">
         <table className="table table-striped table-sm">
@@ -13,15 +33,24 @@ export function DataTable() {
             </thead>
             <tbody>
                 {
-                    [1,2,3,4,5,6,7,8,9,10].map((e)=>(
-                        <tr key={e}>
-                            <td>22/04/2021</td>
-                            <td>Barry Allen</td>
-                            <td>34</td>
-                            <td>25</td>
-                            <td>15017.00</td>
+                  page.content?
+                    page.content.map((e)=>(
+                        <tr key={e.id}>
+                            <td>{formatLocalDate(e.date, 'dd/MM/yyyy')}</td>
+                            <td>{e.seller.name}</td>
+                            <td>{e.visited}</td>
+                            <td>{e.deals}</td>
+                            <td>R$ {e.amount.toFixed(2)}</td>
                         </tr>
                     ))
+                  :<tr>
+                      <td rowSpan={1} colSpan={5}>
+                        <div className="text-center text-primary p-2">
+                          <div className="spinner-border" role="status">
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
                 }
                 
             </tbody>
