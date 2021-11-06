@@ -2,6 +2,7 @@ import Chart from 'react-apexcharts';
 import { BASE_URL } from 'utils/requests';
 import axios from 'axios';
 import { SaleSum } from 'types/sale';
+import { useEffect, useState } from 'react';
 
 type ChartData = {
   labels: string[],
@@ -9,17 +10,32 @@ type ChartData = {
 }
 
 export function DonutChart(){
-  //forma errada, sem hooks
-  let chartData : ChartData = {labels: [], series: []};
-  axios.get<SaleSum[]>(`${BASE_URL}/sales/amount-by-seller`)
-  .then(response =>{
-    const data = response.data;
-    chartData = {
-      labels: data.map(e=>e.sellerName),
-      series: data.map(e=>e.sum)
-    };
-    console.log(chartData);
-  });
+  //forma certa, com hooks
+  const [chartData, setChartData] = useState<ChartData>({labels: [], series: []});
+  useEffect(()=>{
+    axios.get<SaleSum[]>(`${BASE_URL}/sales/amount-by-seller`)
+    .then(response =>{
+      const data = response.data;
+      const chartData = {
+        labels: data.map(e=>e.sellerName),
+        series: data.map(e=>e.sum)
+      };
+      setChartData(chartData);
+    });
+  },[]);
+
+
+  // //forma errada, sem hooks
+  // let chartData : ChartData = {labels: [], series: []};
+  // axios.get<SaleSum[]>(`${BASE_URL}/sales/amount-by-seller`)
+  // .then(response =>{
+  //   const data = response.data;
+  //   chartData = {
+  //     labels: data.map(e=>e.sellerName),
+  //     series: data.map(e=>e.sum)
+  //   };
+  //   console.log(chartData);
+  // });
 
 
   // const mockData = {
